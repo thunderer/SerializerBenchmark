@@ -1,0 +1,24 @@
+{
+    "name": "thunderer/serializer-benchmark",
+    "description": "Benchmark of various PHP serializers",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tomasz Kowalczyk",
+            "email": "tomasz@kowalczyk.cc"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "thunderer/serializard": "dev-master",
+        "jms/serializer": "@stable",
+        "symfony/serializer": "@stable",
+        "symfony/property-access": "@stable",
+        "phpbench/phpbench": "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Thunder\\SerializerBenchmark\\": "src/"
+        }
+    }
+}
