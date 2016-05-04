@@ -13,8 +13,9 @@ use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Thunder\Serializard\Format\JsonFormat;
 use Thunder\Serializard\FormatContainer\FormatContainer;
-use Thunder\Serializard\HandlerContainer\HandlerContainer;
+use Thunder\Serializard\HydratorContainer\FallbackHydratorContainer;
 use Thunder\Serializard\Normalizer\ReflectionNormalizer;
+use Thunder\Serializard\NormalizerContainer\FallbackNormalizerContainer;
 use Thunder\Serializard\Serializard;
 use Thunder\SerializerBenchmark\Entity\Tag;
 use Thunder\SerializerBenchmark\Entity\Team;
@@ -49,7 +50,7 @@ final class SerializerBench
 
     private function createBenchmark()
     {
-        $users = 10;
+        $users = 100;
         $tags = 100;
 
         $team = new Team();
@@ -157,7 +158,7 @@ final class SerializerBench
         $formats = new FormatContainer();
         $formats->add('json', new JsonFormat());
 
-        $normalizers = new HandlerContainer();
+        $normalizers = new FallbackNormalizerContainer();
         $normalizers->add(Team::class, 'team', new ReflectionNormalizer());
         $normalizers->add(User::class, 'user', new ReflectionNormalizer(['password']));
         $normalizers->add(Tag::class, 'tag', new ReflectionNormalizer(['user']));
@@ -165,7 +166,7 @@ final class SerializerBench
             return $date->format(\DateTime::RFC3339);
         });
 
-        $hydrators = new HandlerContainer();
+        $hydrators = new FallbackHydratorContainer();
 
         $serializard = new Serializard($formats, $normalizers, $hydrators);
 
@@ -177,7 +178,7 @@ final class SerializerBench
         $formats = new FormatContainer();
         $formats->add('json', new JsonFormat());
 
-        $normalizers = new HandlerContainer();
+        $normalizers = new FallbackNormalizerContainer();
         $normalizers->add(Team::class, 'team', function(Team $team) {
             return ['users' => $team->getUsers()];
         });
@@ -199,7 +200,7 @@ final class SerializerBench
             return $date->format(\DateTime::RFC3339);
         });
 
-        $hydrators = new HandlerContainer();
+        $hydrators = new FallbackHydratorContainer();
 
         $serializard = new Serializard($formats, $normalizers, $hydrators);
 
